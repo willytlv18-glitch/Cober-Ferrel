@@ -1,0 +1,20 @@
+{
+  "name": "sistema-fabrica-paneles",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Monorepo (frontend + backend) para fábrica de paneles, muros, techos, coberturas y accesorios",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev:frontend": "npm --workspace frontend run dev",
+    "dev:backend": "npm --workspace backend run dev",
+    "dev": "concurrently \"npm:dev:backend\" \"npm:dev:frontend\"",
+    "build": "npm -w frontend run build && echo 'Backend no requiere build'",
+    "start": "npm -w backend start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
