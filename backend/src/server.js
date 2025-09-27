@@ -3,6 +3,8 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import { createClient } from '@supabase/supabase-js';
+import catalogRouter from './routes/catalog.js';
+import inventoryRouter from './routes/inventory.js';
 
 const app = express();
 app.use(cors());
@@ -37,6 +39,10 @@ app.get('/api/ping-supabase', async (_req, res) => {
     res.status(500).json({ ok: false, message: err.message });
   }
 });
+
+// Montar rutas de API
+app.use('/api/catalog', catalogRouter);
+app.use('/api/inventario', inventoryRouter);
 
 app.listen(PORT, () => {
   console.log(`[backend] listening on http://localhost:${PORT}`);

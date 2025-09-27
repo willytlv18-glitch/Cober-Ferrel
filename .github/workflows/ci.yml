@@ -1,0 +1,45 @@
+name: Node.js CI
+
+# Se activa cada vez que subes código (push) a la rama 'main'
+# o cuando se crea un Pull Request hacia 'main'
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    # El robot usará la última versión de Ubuntu
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # Puedes definir varias versiones de Node.js para probar
+        node-version: [18.x]
+
+    steps:
+    # Paso 1: Descarga tu código al entorno del robot
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Paso 2: Configura la versión de Node.js especificada arriba
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    # Paso 3: Instala todas las dependencias del proyecto
+    - name: Install dependencies
+      run: npm install
+
+    # Paso 4 (Opcional pero recomendado): Revisa el estilo del código
+    # Asegúrate de tener un script "lint" en tu package.json
+    - name: Run linter
+      run: npm run lint --if-present
+
+    # Paso 5 (Opcional pero recomendado): Intenta construir el proyecto
+    # Asegúrate de tener un script "build" en tu package.json
+    - name: Build project
+      run: npm run build --if-present
